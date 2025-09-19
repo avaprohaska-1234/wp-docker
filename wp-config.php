@@ -1,8 +1,10 @@
 <?php
+///define( 'WP_REDIS_HOST', 'redis' );
+///define( 'WP_REDIS_PORT', 6379 );
 
-// define( 'WP_REDIS_HOST', 'redis' );
-//define( 'WP_REDIS_PORT', 6379 );
-
+if ( getenv('WP_REDIS_HOST') ) {
+    define( 'WP_REDIS_HOST', getenv('WP_REDIS_HOST') );
+}
 
 /**
  * The base configuration for WordPress
