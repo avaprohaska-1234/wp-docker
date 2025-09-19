@@ -5,7 +5,9 @@
 if ( getenv('WP_REDIS_HOST') ) {
     define( 'WP_REDIS_HOST', getenv('WP_REDIS_HOST') );
 }
-
+//AP - review later - can I use the fuction below as a catch all? or do I need to define here?
+//
+//
 /**
  * The base configuration for WordPress
  *
