@@ -57,6 +57,10 @@ services:
       expose:
         - 6379
       restart: unless-stopped
+      env_file: .env
+      environment:
+        WP_REDIS_HOST: '${WP_REDIS_HOST}'
+        WP_REDIS_PORT: '${WP_REDIS_PORT}'
       volumes:
         - redis_data:/data
       networks:
