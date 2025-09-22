@@ -13,8 +13,8 @@ RUN apt-get update && apt-get install -y \
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 
 # Make WP-CLI executable and move it to a directory in your PATH
-RUN chmod +x wp-cli.phar \
-    && mv wp-cli.phar /usr/local/bin/wp
+RUN chmod +x wp-cli.phar
+RUN mv wp-cli.phar /usr/local/bin/wp
 
 # Verify WP-CLI installation
 RUN wp --info
