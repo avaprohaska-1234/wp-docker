@@ -14,9 +14,10 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 
 # Make WP-CLI executable and move it to a directory in your PATH
 RUN chmod +x wp-cli.phar
+CMD ["sleep", "10"]
 RUN mv wp-cli.phar /usr/local/bin/wp
-
+CMD ["sleep", "10"]
 # Verify WP-CLI installation
 RUN wp --info
 
-RUN wp plugin activate woocommerce  --allow-root --path=/var/www/html
+#RUN wp plugin activate woocommerce  --allow-root --path=/var/www/html
