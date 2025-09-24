@@ -3,7 +3,7 @@ FROM wordpress:latest
 #WORKDIR /wp_docker
 RUN ls
 COPY ./wp-content/plugins/woocommerce /var/www/html/wp-content/plugins/woocommerce
-
+COPY ./wp-content/plugins/wp-mail-smtp /var/www/html/wp-content/plugins/wp-mail-smtp
 # Install necessary dependencies for WP-CLI
 RUN apt-get update && apt-get install -y \
     curl \
