@@ -1,6 +1,8 @@
 FROM wordpress:latest
 # Copy plugin from local dir to wordpress plugin dir
-COPY ./wp-content/plugins/woocommerce/ /var/www/html/wp-content/plugins/woocommerce/
+WORKDIR /wp_docker
+RUN ls
+COPY ./wp-content/plugins/woocommerce /var/www/html/wp-content/plugins/woocommerce
 
 # Install necessary dependencies for WP-CLI
 RUN apt-get update && apt-get install -y \
@@ -14,9 +16,9 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 
 # Make WP-CLI executable and move it to a directory in your PATH
 RUN chmod +x wp-cli.phar
-CMD ["sleep", "10"]
+#CMD ["sleep", "10"]
 RUN mv wp-cli.phar /usr/local/bin/wp
-CMD ["sleep", "10"]
+#CMD ["sleep", "10"]
 # Verify WP-CLI installation
 RUN wp --info
 
