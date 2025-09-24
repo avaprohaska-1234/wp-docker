@@ -38,8 +38,8 @@ services:
         - database
         - redis
       build:
-        context: .
-        dockerfile: Dockerfile
+        context: ./plugin
+        dockerfile: ./plugin/Dockerfile
       ports:
          - "8080:80"
           #image: Dockerfile
