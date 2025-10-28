@@ -40,8 +40,8 @@ services:
       build:
         context: .
         dockerfile: ./Dockerfile
-      ports:
-        - "8080:80"
+          # ports:
+          #- "8080:80"
           #image: Dockerfile
       restart: unless-stopped
       env_file: .env
@@ -52,13 +52,13 @@ services:
         WORDPRESS_DB_PASSWORD: '${MYSQL_PASSWORD}'
         WP_REDIS_HOST: '${WP_REDIS_HOST}'
         WP_REDIS_PORT: '${WP_REDIS_PORT}'
-          # labels:
-          #- "traefik.enable=true"
-          # - "traefik.http.routers.wordpress.rule=Host(`avap.local`)" ## && PathPrefix(`/wp`)"
-          # - "traefik.http.routers.wordpress.entrypoints=web"
-          #- "traefik.http.routers.wordpress.tls=true"
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.wordpress.rule=Host(`avap.local`) && PathPrefix(`/wp`)"
+        - "traefik.http.routers.wordpress.entrypoints=web"
+        - "traefik.http.routers.wordpress.tls=true"
           ##- "traefik.http.routers.wordpress.tls.certresolver=myresolver" # Replace with your certificate resolver name
-          #- "traefik.http.services.wordpress.loadbalancer.server.port=80" # WordPress usually listens on port 80
+        - "traefik.http.services.wordpress.loadbalancer.server.port=80" # WordPress usually listens on port 80
       volumes:
         - ./:/var/www/html
       networks:
@@ -92,27 +92,27 @@ services:
       networks:
         - wordpress-network
 
-          #traefik:
-          # image: "traefik:v3.4"
-          #container_name: "traefik"
-          #restart: unless-stopped
-          # security_opt:
-          #- no-new-privileges:true
-          #networks:
-          # - proxy
-          #- wordpress-network   
-          #command:
-          #- "--api.insecure=true"
-          #- "--api.dashboard=true"
-          # - "--providers.docker=true"
-          # - "--providers.docker.exposedbydefault=false"
-          #- "--providers.docker.network=proxy"
-          #- "--entryPoints.web.address=:80"
-          # ports:
-          #- "80:80"
-          #- "8080:8080"
-          #volumes:
-          #- "/var/run/docker.sock:/var/run/docker.sock:ro"
+    traefik:
+      image: "traefik:v3.4"
+      container_name: "traefik"
+      restart: unless-stopped
+      security_opt:
+        - no-new-privileges:true
+      networks:
+        - proxy
+        - wordpress-network   
+      command:
+        - "--api.insecure=true"
+        - "--api.dashboard=true"
+        - "--providers.docker=true"
+        - "--providers.docker.exposedbydefault=false"
+        - "--providers.docker.network=proxy"
+        - "--entryPoints.web.address=:80"
+      ports:
+        - "80:80"
+        - "8080:8080"
+      volumes:
+        - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
 volumes:
   db-data:
