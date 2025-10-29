@@ -24,14 +24,23 @@ services:
         - database
       image: phpmyadmin:latest
       restart: unless-stopped
-      ports:
-        - 8081:80
+        #ports:
+        # - 8081:80
       env_file: .env
       environment:
         PMA_HOST: database
         MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
       networks:
         - wordpress-network
+        - proxy
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.avap.local`) && PathPrefix(`/phpadmin`)"
+        - "traefik.http.routers.phpmyadmin.entrypoints=web"
+        - "traefik.http.routers.phpmyadmin.tls=true"
+          ##- "traefik.http.routers.wordpress.tls.certresolver=myresolver" # Replace with your certificate resolver name
+        - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80" # WordPress usually listens on port 80
+
 
     wordpress:
       depends_on:
@@ -54,7 +63,7 @@ services:
         WP_REDIS_PORT: '${WP_REDIS_PORT}'
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.wordpress.rule=Host(`avap.local`) && PathPrefix(`/wp`)"
+        - "traefik.http.routers.wordpress.rule=Host(`wordpress.local`) && PathPrefix(`/phpadmin`)"
         - "traefik.http.routers.wordpress.entrypoints=web"
         - "traefik.http.routers.wordpress.tls=true"
           ##- "traefik.http.routers.wordpress.tls.certresolver=myresolver" # Replace with your certificate resolver name
@@ -63,8 +72,8 @@ services:
         - ./:/var/www/html
       networks:
         - wordpress-network
-          #- proxy
-          #
+        - proxy
+          
     redis:
       image: redis:latest
       expose:
@@ -111,6 +120,7 @@ services:
       ports:
         - "80:80"
         - "8080:8080"
+        - "443:443"
       volumes:
         - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
