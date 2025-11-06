@@ -1,7 +1,10 @@
 <?php
 ///define( 'WP_REDIS_HOST', 'redis' );
 ///define( 'WP_REDIS_PORT', 6379 );
-
+//
+//
+define('WP_HOME','http://wordpress.local/');
+define('WP_SITEURL','http://wordpress.local/');
 if ( getenv('WP_REDIS_HOST') ) {
     define( 'WP_REDIS_HOST', getenv('WP_REDIS_HOST') );
 }
